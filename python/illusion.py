@@ -34,7 +34,7 @@ image_link = args.image
 
 result = client.predict(
     image_link,
-    args.Prompt,  # str  in 'Prompt' Textbox component
+    args.prompt,  # str  in 'Prompt' Textbox component
     "low quality",  # str  in 'Negative Prompt' Textbox component
     7.5,  # float (numeric value between 0.0 and 50.0) in 'Guidance Scale' Slider component
     0.8,  # float (numeric value between 0.0 and 5.0) in 'Illusion strength' Slider component

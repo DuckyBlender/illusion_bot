@@ -1,5 +1,5 @@
 use dotenv::dotenv;
-use log::info;
+use log::{error, info};
 use teloxide::{
     adaptors::throttle::Limits, prelude::*, types::InputFile,
     utils::command::BotCommands,
@@ -162,7 +162,8 @@ async fn generate_illusion(
                 .await?;
         }
         Some(code) => {
-            info!("Command failed with code: {}", code);
+            error!("Command failed with code: {}", code);
+            error!("Error: {:?}", String::from_utf8(output.stderr).unwrap());
             bot.send_message(msg.chat.id, format!("Command failed with code: {}", code))
                 .reply_to_message_id(msg.id)
                 .await?;
