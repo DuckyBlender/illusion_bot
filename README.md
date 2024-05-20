@@ -8,16 +8,14 @@ A Telegram bot that generates illusions from user-provided images and prompts.
 
 * Responds to user commands: ~~`/illusion`~~, `/trollface`, `/help`, and `/start`
 * Generates illusions using a Python script and sends the result as a photo
-~~* Uploads images to an S3 bucket and generates a presigned URL for the API~~
 * Supports throttling to prevent abuse
 
 **Setup**
 --------
 
 1. Create a Telegram bot and obtain a bot token
-2. Install AWS CLI and configure it with `aws configure`
-3. Set up an S3 bucket and configure the `BUCKET_NAME` environment variable
-4. Run the bot using `cargo run --release`
+2. Install the dependencies for the python script `pip install -r python/requirements.txt`
+3. Run the bot using `cargo run --release`
 
 **Commands**
 ------------
