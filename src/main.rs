@@ -41,13 +41,21 @@ async fn answer(bot: Bot, msg: Message, cmd: Command) -> ResponseResult<()> {
         }
         Command::Illusion(prompt) => {
             // Invoke the python script with the argument prompt
-            let output = std::process::Command::new("cmd")
-                .arg("/C")
-                .arg("python")
-                .arg("illusion.py")
-                .arg(prompt.clone())
-                .output()
-                .expect("Failed to execute command");
+            let output = if cfg!(target_os = "windows") {
+                std::process::Command::new("cmd")
+                    .arg("/C")
+                    .arg("python")
+                    .arg("python\\illusion.py")
+                    .arg(&prompt)
+                    .output()
+                    .expect("Failed to execute command")
+            } else {
+                std::process::Command::new("python3")
+                    .arg("python/illusion.py")
+                    .arg(&prompt)
+                    .output()
+                    .expect("Failed to execute command")
+            };
 
             info!("Status: {:?}", output.status);
             // If the status is 0, then the command was successful and the output is a local path to the image
@@ -59,7 +67,7 @@ async fn answer(bot: Bot, msg: Message, cmd: Command) -> ResponseResult<()> {
                     let image = std::fs::read(output_str.trim()).unwrap();
                     // Send the image as a photo
                     bot.send_photo(msg.chat.id, InputFile::memory(image))
-                        .caption(prompt)
+                        .caption(&prompt)
                         .await?;
                 }
                 Some(code) => {
@@ -77,4 +85,33 @@ async fn answer(bot: Bot, msg: Message, cmd: Command) -> ResponseResult<()> {
     }
 
     Ok(())
+}
+
+#[cfg(test)]
+mod tests {
+    #[test]
+    fn text_script() {
+        let output = if cfg!(target_os = "windows") {
+            std::process::Command::new("cmd")
+                .arg("/C")
+                .arg("python")
+                .arg("python\\illusion.py")
+                .arg("--status")
+                .arg("dummy")
+                .output()
+                .expect("Failed to execute command")
+        } else {
+            std::process::Command::new("python3")
+                .arg("python/illusion.py")
+                .arg("--status")
+                .arg("dummy")
+                .output()
+                .expect("Failed to execute command")
+        };
+
+        println!("Status: {:?}", output.status);
+        println!("Output: {:?}", String::from_utf8(output.stdout).unwrap());
+        println!("Error: {:?}", String::from_utf8(output.stderr).unwrap());
+        assert_eq!(output.status.code(), Some(0));
+    }
 }

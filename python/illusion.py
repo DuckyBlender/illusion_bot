@@ -10,11 +10,17 @@ parser = argparse.ArgumentParser()
 
 # Add the arguments
 parser.add_argument('Prompt', metavar='Prompt', type=str, help='the prompt for the image')
+parser.add_argument('--status', action='store_true', help='check the status of the client')
 
 # Parse the arguments
 args = parser.parse_args()
 
 client = Client("https://ap123-illusiondiffusion.hf.space/--replicas/w3ut2/", verbose=False)
+
+# If --status is provided, exit after connecting to the client
+if args.status:
+    sys.exit(0)
+
 result = client.predict(
     # "https://raw.githubusercontent.com/gradio-app/gradio/main/test/test_files/bus.png",  # filepath  in 'Input Illusion' Image component
     "https://upload.wikimedia.org/wikipedia/en/9/9a/Trollface_non-free.png",
