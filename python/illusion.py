@@ -21,7 +21,7 @@ if (args.prompt is None or args.image is None) and not args.status:
     print("Error: the prompt and image arguments are required when --status is not set")
     sys.exit(1)
 
-client = Client("https://ap123-illusiondiffusion.hf.space/--replicas/w3ut2/", verbose=False)
+client = Client("https://ap123-illusiondiffusion.hf.space/--replicas/v2tkq/", verbose=False)
 
 # If --status is provided, exit after connecting to the client
 if args.status:

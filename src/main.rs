@@ -1,9 +1,6 @@
 use dotenv::dotenv;
 use log::{error, info};
-use teloxide::{
-    adaptors::throttle::Limits, prelude::*, types::InputFile,
-    utils::command::BotCommands,
-};
+use teloxide::{prelude::*, types::InputFile, utils::command::BotCommands};
 
 #[tokio::main]
 async fn main() {
@@ -11,13 +8,7 @@ async fn main() {
     pretty_env_logger::init();
     info!("Starting command bot...");
 
-    let limits = Limits {
-        messages_per_sec_chat: 1,
-        messages_per_min_chat: 2,
-        messages_per_min_channel: 2,
-        messages_per_sec_overall: 1,
-    };
-    let bot = Bot::from_env().throttle(limits).into_inner();
+    let bot = Bot::from_env();
 
     bot.set_my_commands(Command::bot_commands()).await.unwrap();
 
@@ -59,40 +50,39 @@ async fn answer(bot: Bot, msg: Message, cmd: Command) -> ResponseResult<()> {
                 "https://upload.wikimedia.org/wikipedia/en/9/9a/Trollface_non-free.png",
             )
             .await?;
-        }
-        // Command::Illusion(prompt) => {
-            // let url = match &msg.reply_to_message() {
-            //     Some(reply) => match &reply.photo() {
-            //         Some(photos) => photos[0].file.id.clone(),
-            //         None => {
-            //             bot.send_message(
-            //                 msg.chat.id,
-            //                 "Please reply to an image to generate an illusion.",
-            //             )
-            //             .await?;
-            //             return Ok(());
-            //         }
-            //     },
-            //     None => {
-            //         bot.send_message(
-            //             msg.chat.id,
-            //             "Please reply to an image to generate an illusion.",
-            //         )
-            //         .await?;
-            //         return Ok(());
-            //     }
-            // };
+        } // Command::Illusion(prompt) => {
+          // let url = match &msg.reply_to_message() {
+          //     Some(reply) => match &reply.photo() {
+          //         Some(photos) => photos[0].file.id.clone(),
+          //         None => {
+          //             bot.send_message(
+          //                 msg.chat.id,
+          //                 "Please reply to an image to generate an illusion.",
+          //             )
+          //             .await?;
+          //             return Ok(());
+          //         }
+          //     },
+          //     None => {
+          //         bot.send_message(
+          //             msg.chat.id,
+          //             "Please reply to an image to generate an illusion.",
+          //         )
+          //         .await?;
+          //         return Ok(());
+          //     }
+          // };
 
-            // // We can't just pass the download URL to the API because this would expose the bot token
-            // // So we download the image into memory, send it to s3, and then pass the presigned s3 URL to the API
-            // // Download the image
-            // let img_file = bot.get_file(&url).await.unwrap();
-            // let img_url = img_file.path;
-            // let mut buf: Vec<u8> = Vec::new();
-            // bot.download_file(&img_url, &mut buf).await.unwrap();
-            // todo!();
-        // }
-            }
+          // // We can't just pass the download URL to the API because this would expose the bot token
+          // // So we download the image into memory, send it to s3, and then pass the presigned s3 URL to the API
+          // // Download the image
+          // let img_file = bot.get_file(&url).await.unwrap();
+          // let img_url = img_file.path;
+          // let mut buf: Vec<u8> = Vec::new();
+          // bot.download_file(&img_url, &mut buf).await.unwrap();
+          // todo!();
+          // }
+    }
     Ok(())
 }
 
