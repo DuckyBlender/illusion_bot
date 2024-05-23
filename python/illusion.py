@@ -37,12 +37,13 @@ result = client.predict(
     args.prompt,  # str  in 'Prompt' Textbox component
     "low quality",  # str  in 'Negative Prompt' Textbox component
     7.5,  # float (numeric value between 0.0 and 50.0) in 'Guidance Scale' Slider component
-    0.8,  # float (numeric value between 0.0 and 5.0) in 'Illusion strength' Slider component
+    0.7,  # float (numeric value between 0.0 and 5.0) in 'Illusion strength' Slider component
     0.0,  # float (numeric value between 0.0 and 1.0) in 'Start of ControlNet' Slider component
     1.0,  # float (numeric value between 0.0 and 1.0) in 'End of ControlNet' Slider component
     1.0,  # float (numeric value between 0.0 and 1.0) in 'Strength of the upscaler' Slider component
     -1,  # float (numeric value between -1 and 9999999999) in 'Seed' Slider component
-    "DPM++ Karras SDE", 
+    # "DPM++ Karras SDE", 
+    "Euler",
     api_name="/inference"
 )
 
